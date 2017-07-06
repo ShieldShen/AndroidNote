@@ -48,10 +48,46 @@ slide_right_in.xml
 ```
 ###5.0以后
 5.0之前实现过场动画有一定局限性，它仅仅是把整个视图一起进行简单的过渡变幻。而在Lolipop之后，我们可以使用api让过渡动画细分到每一个View，还可以实现一个view从一个界面过渡另一个界面的视觉效果。
+5.0之后的场景切换动画是建立在Transitions上，这个框架为不同UI间切换产生的动画效果提供了便捷的API。Transitions的实现主要基于两个概念，场景（Scenes）和变换（Transition）。Scenes会记录UI状态，而Transitions会根据开始场景以及结束场景中对应的UI状态创建一个动画。
+####使用Transitions做一个动画
+```java
+    @Override
+    protected void initView() {
 
+        final RelativeLayout container = (RelativeLayout) findViewById(R.id.content_kitkat);
+        final TextView iv1 = (TextView) findViewById(R.id.tv1);
+        final TextView iv2 = (TextView) findViewById(R.id.tv2);
+        if (TextUtils.equals(getMode(), MODE_3)) {
 
+            setFab(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TransitionManager.beginDelayedTransition(container, new Fade());
+                    toggle(iv1);
+                    toggle(iv2);
+                }
+            });
+        } else {
+            iv1.setVisibility(View.GONE);
+            iv2.setVisibility(View.GONE);
+        }
+    }
 
+    public void toggle(View view) {
+        view.setVisibility(view.getVisibility() == View.VISIBLE ? View.INVISIBLE : View.VISIBLE);
+    }
+```
+![](./_image/20170213-1.gif)
+这个框架是不是很方便啊，接下来就是主题了，使用Transitions做场景切换动画。
+###使用Transitions做场景切换动画
+与5.0之前版本一样，A进入B B返回A这两个过程由四个动画来决定效果：
+> A进入B时，A执行exit transition B执行enter transition
+> B返回A时，B执行return transition A执行reenter transition
 
+而在使用Transitions做场景切换时，框架允许我们可以让场景整体变换，也可以有一个元素从一个场景过渡到另一个场景的效果（shared elements transition）
+这个被到处用的例子
+![](./_image/1-150113195F54J.gif)
+下面就详细介绍Transitions的相关Api
 
 
 

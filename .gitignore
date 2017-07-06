@@ -6,3 +6,15 @@
 设计模式/_book/asset/farbox/basic.css
 设计模式/_book/
 设计模式/_image/
+
+.sync/*
+
+.me_configs.data
+
+.z_sync_configs.data
+
+sync_changes.log
+
+sync_hook.script
+
+**/.Archive
